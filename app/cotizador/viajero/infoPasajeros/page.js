@@ -17,7 +17,9 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  IconButton
+  IconButton,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import { motion } from 'motion/react';
 import { ChevronRight, ChevronLeft, Camera, Upload, Edit, Trash2, Plus, Eye, X } from 'lucide-react';
@@ -80,6 +82,7 @@ export default function InfoPasajerosPage() {
   const [showForm, setShowForm] = useState(false);
   const [titularImage, setTitularImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null); // Contiene la base64 a previsualizar
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -147,6 +150,12 @@ export default function InfoPasajerosPage() {
         const result = await res.json();
         
         if (result.success && result.data) {
+          if (result.data.esValido === false) {
+            setErrorMsg('El documento ingresado no es válido o es ilegible. Asegúrate de subir una foto clara de una Cédula o Pasaporte.');
+            setProcessingTarget(null);
+            return;
+          }
+
           let rawCedula = result.data.cedula || '';
           let typeId = 'V';
           if (rawCedula.toUpperCase().includes('E')) typeId = 'E';
@@ -159,6 +168,13 @@ export default function InfoPasajerosPage() {
             if (parts.length === 3) parsedDate = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
           }
 
+          // Formatear fecha de vencimiento de DD/MM/YYYY a YYYY-MM-DD
+          let parsedExpiration = '';
+          if (result.data.fechaVencimiento) {
+            const partsExp = result.data.fechaVencimiento.split(/[\/\-]/);
+            if (partsExp.length === 3) parsedExpiration = `${partsExp[2]}-${partsExp[1].padStart(2, '0')}-${partsExp[0].padStart(2, '0')}`;
+          }
+
           if (target === 'titular') {
             setFormData(prev => ({
               ...prev,
@@ -166,7 +182,8 @@ export default function InfoPasajerosPage() {
               numeroIdentificacion: cleanCedula || prev.numeroIdentificacion,
               nombres: result.data.nombres || prev.nombres,
               apellidos: result.data.apellidos || prev.apellidos,
-              fechaNacimiento: parsedDate || prev.fechaNacimiento
+              fechaNacimiento: parsedDate || prev.fechaNacimiento,
+              fechaVencimiento: parsedExpiration || prev.fechaVencimiento
             }));
             setShowForm(true); // Mostramos el formulario al terminar la extracción
           } else {
@@ -179,6 +196,7 @@ export default function InfoPasajerosPage() {
                 nombres: result.data.nombres || newArr[target].nombres,
                 apellidos: result.data.apellidos || newArr[target].apellidos,
                 fechaNacimiento: parsedDate || newArr[target].fechaNacimiento,
+                fechaVencimiento: parsedExpiration || newArr[target].fechaVencimiento,
                 showForm: true
               };
               return newArr;
@@ -630,6 +648,18 @@ export default function InfoPasajerosPage() {
               )}
             </DialogContent>
           </Dialog>
+
+          {/* Snackbar para errores */}
+          <Snackbar 
+            open={!!errorMsg} 
+            autoHideDuration={6000} 
+            onClose={() => setErrorMsg('')}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          >
+            <Alert onClose={() => setErrorMsg('')} severity="error" sx={{ width: '100%', borderRadius: 3 }}>
+              {errorMsg}
+            </Alert>
+          </Snackbar>
         </Container>
       </Box>
     </ThemeProvider>
