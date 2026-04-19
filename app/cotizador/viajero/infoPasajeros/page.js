@@ -362,24 +362,46 @@ export default function InfoPasajerosPage() {
                 <Typography variant="body2" sx={{ color: 'text.secondary', mb: 3, textAlign: 'center', maxWidth: '400px' }}>
                   Sube una imagen o toma una foto de tu documento de identidad para llenar tus datos automáticamente.
                 </Typography>
-                <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
+                <Box sx={{ display: 'flex', gap: { xs: 1.5, sm: 2 }, flexWrap: { xs: 'nowrap', sm: 'wrap' }, justifyContent: 'center', width: '100%' }}>
                   <Button 
                     variant="outlined" 
                     startIcon={processingTarget === 'titular' ? <CircularProgress size={18} color="inherit" /> : <Upload size={18} />} 
                     onClick={() => triggerUpload('titular')}
                     disabled={processingTarget !== null}
-                    sx={{ borderRadius: '10px', textTransform: 'none', fontWeight: 600, borderColor: 'rgba(0, 75, 141, 0.3)' }}
+                    sx={{ 
+                      borderRadius: '10px', 
+                      textTransform: 'none', 
+                      fontWeight: 600, 
+                      borderColor: 'rgba(0, 75, 141, 0.3)',
+                      minWidth: { xs: '48px', sm: 'auto' },
+                      height: { xs: '48px', sm: 'auto' },
+                      px: { xs: 0, sm: 2 },
+                      '& .MuiButton-startIcon': { margin: { xs: 0, sm: '0 8px 0 -4px' } }
+                    }}
                   >
-                    {processingTarget === 'titular' ? 'Procesando...' : 'Subir Imagen'}
+                    <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                      {processingTarget === 'titular' ? 'Procesando...' : 'Subir Imagen'}
+                    </Box>
                   </Button>
                   <Button 
                     variant="outlined" 
                     startIcon={processingTarget === 'titular' ? <CircularProgress size={18} color="inherit" /> : <Camera size={18} />} 
                     onClick={() => triggerCamera('titular')}
                     disabled={processingTarget !== null}
-                    sx={{ borderRadius: '10px', textTransform: 'none', fontWeight: 600, borderColor: 'rgba(0, 75, 141, 0.3)' }}
+                    sx={{ 
+                      borderRadius: '10px', 
+                      textTransform: 'none', 
+                      fontWeight: 600, 
+                      borderColor: 'rgba(0, 75, 141, 0.3)',
+                      minWidth: { xs: '48px', sm: 'auto' },
+                      height: { xs: '48px', sm: 'auto' },
+                      px: { xs: 0, sm: 2 },
+                      '& .MuiButton-startIcon': { margin: { xs: 0, sm: '0 8px 0 -4px' } }
+                    }}
                   >
-                    {processingTarget === 'titular' ? 'Procesando...' : 'Tomar Foto'}
+                    <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                      {processingTarget === 'titular' ? 'Procesando...' : 'Tomar Foto'}
+                    </Box>
                   </Button>
                   {/* {!showForm && ( */}
                     <Button 
@@ -387,9 +409,20 @@ export default function InfoPasajerosPage() {
                       startIcon={<Edit size={18} />} 
                       onClick={() => setShowForm(true)}
                       disabled={processingTarget !== null}
-                      sx={{ borderRadius: '10px', textTransform: 'none', fontWeight: 600, borderColor: 'rgba(0, 75, 141, 0.3)' }}
+                      sx={{ 
+                        borderRadius: '10px', 
+                        textTransform: 'none', 
+                        fontWeight: 600, 
+                        borderColor: 'rgba(0, 75, 141, 0.3)',
+                        minWidth: { xs: '48px', sm: 'auto' },
+                        height: { xs: '48px', sm: 'auto' },
+                        px: { xs: 0, sm: 2 },
+                        '& .MuiButton-startIcon': { margin: { xs: 0, sm: '0 8px 0 -4px' } }
+                      }}
                     >
-                      Ingreso Manual
+                      <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                        Ingreso Manual
+                      </Box>
                     </Button>
                    {/* )} */}
                   {titularImage && (
@@ -397,9 +430,20 @@ export default function InfoPasajerosPage() {
                       variant="outlined" 
                       startIcon={<Eye size={18} />} 
                       onClick={() => setPreviewImage(titularImage)}
-                      sx={{ borderRadius: '10px', textTransform: 'none', fontWeight: 600, borderColor: 'rgba(0, 75, 141, 0.3)' }}
+                      sx={{ 
+                        borderRadius: '10px', 
+                        textTransform: 'none', 
+                        fontWeight: 600, 
+                        borderColor: 'rgba(0, 75, 141, 0.3)',
+                        minWidth: { xs: '48px', sm: 'auto' },
+                        height: { xs: '48px', sm: 'auto' },
+                        px: { xs: 0, sm: 2 },
+                        '& .MuiButton-startIcon': { margin: { xs: 0, sm: '0 8px 0 -4px' } }
+                      }}
                     >
-                      Ver Documento
+                      <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                        Ver Documento
+                      </Box>
                     </Button>
                   )}
                 </Box>
@@ -488,24 +532,46 @@ export default function InfoPasajerosPage() {
                   <Typography variant="subtitle2" sx={{ color: 'text.primary', mb: 2, fontWeight: 700 }}>
                     Autocompletado Inteligente
                   </Typography>
-                  <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
+                  <Box sx={{ display: 'flex', gap: { xs: 1.5, sm: 2 }, flexWrap: { xs: 'nowrap', sm: 'wrap' }, justifyContent: 'center', width: '100%' }}>
                     <Button 
                       variant="outlined" 
                       startIcon={processingTarget === index ? <CircularProgress size={18} color="inherit" /> : <Upload size={18} />} 
                       onClick={() => triggerUpload(index)}
                       disabled={processingTarget !== null}
-                      sx={{ borderRadius: '10px', textTransform: 'none', fontWeight: 600, borderColor: 'rgba(0, 75, 141, 0.3)' }}
+                      sx={{ 
+                        borderRadius: '10px', 
+                        textTransform: 'none', 
+                        fontWeight: 600, 
+                        borderColor: 'rgba(0, 75, 141, 0.3)',
+                        minWidth: { xs: '48px', sm: 'auto' },
+                        height: { xs: '48px', sm: 'auto' },
+                        px: { xs: 0, sm: 2 },
+                        '& .MuiButton-startIcon': { margin: { xs: 0, sm: '0 8px 0 -4px' } }
+                      }}
                     >
-                      {processingTarget === index ? 'Procesando...' : 'Subir Imagen'}
+                      <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                        {processingTarget === index ? 'Procesando...' : 'Subir Imagen'}
+                      </Box>
                     </Button>
                     <Button 
                       variant="outlined" 
                       startIcon={processingTarget === index ? <CircularProgress size={18} color="inherit" /> : <Camera size={18} />} 
                       onClick={() => triggerCamera(index)}
                       disabled={processingTarget !== null}
-                      sx={{ borderRadius: '10px', textTransform: 'none', fontWeight: 600, borderColor: 'rgba(0, 75, 141, 0.3)' }}
+                      sx={{ 
+                        borderRadius: '10px', 
+                        textTransform: 'none', 
+                        fontWeight: 600, 
+                        borderColor: 'rgba(0, 75, 141, 0.3)',
+                        minWidth: { xs: '48px', sm: 'auto' },
+                        height: { xs: '48px', sm: 'auto' },
+                        px: { xs: 0, sm: 2 },
+                        '& .MuiButton-startIcon': { margin: { xs: 0, sm: '0 8px 0 -4px' } }
+                      }}
                     >
-                      {processingTarget === index ? 'Procesando...' : 'Tomar Foto'}
+                      <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                        {processingTarget === index ? 'Procesando...' : 'Tomar Foto'}
+                      </Box>
                     </Button>
                     <Button 
                       variant="outlined" 
@@ -518,18 +584,40 @@ export default function InfoPasajerosPage() {
                         });
                       }}
                       disabled={processingTarget !== null}
-                      sx={{ borderRadius: '10px', textTransform: 'none', fontWeight: 600, borderColor: 'rgba(0, 75, 141, 0.3)' }}
+                      sx={{ 
+                        borderRadius: '10px', 
+                        textTransform: 'none', 
+                        fontWeight: 600, 
+                        borderColor: 'rgba(0, 75, 141, 0.3)',
+                        minWidth: { xs: '48px', sm: 'auto' },
+                        height: { xs: '48px', sm: 'auto' },
+                        px: { xs: 0, sm: 2 },
+                        '& .MuiButton-startIcon': { margin: { xs: 0, sm: '0 8px 0 -4px' } }
+                      }}
                     >
-                      Ingreso Manual
+                      <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                        Ingreso Manual
+                      </Box>
                     </Button>
                     {acompanante.image && (
                       <Button 
                         variant="outlined" 
                         startIcon={<Eye size={18} />} 
                         onClick={() => setPreviewImage(acompanante.image)}
-                        sx={{ borderRadius: '10px', textTransform: 'none', fontWeight: 600, borderColor: 'rgba(0, 75, 141, 0.3)' }}
+                        sx={{ 
+                          borderRadius: '10px', 
+                          textTransform: 'none', 
+                          fontWeight: 600, 
+                          borderColor: 'rgba(0, 75, 141, 0.3)',
+                          minWidth: { xs: '48px', sm: 'auto' },
+                          height: { xs: '48px', sm: 'auto' },
+                          px: { xs: 0, sm: 2 },
+                          '& .MuiButton-startIcon': { margin: { xs: 0, sm: '0 8px 0 -4px' } }
+                        }}
                       >
-                        Ver Documento
+                        <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                          Ver Documento
+                        </Box>
                       </Button>
                     )}
                   </Box>
