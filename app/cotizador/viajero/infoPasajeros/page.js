@@ -98,7 +98,7 @@ export default function InfoPasajerosPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Datos del titular:", formData, "Acompañantes:", acompanantes);
-    // router.push('/cotizador/viajero/checkout'); // Redirigir a la siguiente pantalla
+    router.push('/cotizador/viajero/infoContacto');
   };
 
   // Manejador para el archivo seleccionado (cámara o galería)
