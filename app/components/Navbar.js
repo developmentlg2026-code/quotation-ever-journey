@@ -22,7 +22,7 @@ export default function Navbar() {
       <Toolbar sx={{ position: 'relative' }}>
         
         {/* Logo (Izquierda en móvil, Centrado en pantallas más grandes) */}
-        {pathname !== '/cotizador/viajero' && (
+        {/* {pathname !== '/cotizador/viajero' && (
           <Box sx={{
             position: { xs: 'static', sm: 'absolute' },
             left: { xs: 'auto', sm: '50%' },
@@ -36,7 +36,7 @@ export default function Navbar() {
               sx={{ height: 50, objectFit: 'contain' }} // Ajusta el alto según prefieras
             />
           </Box>
-        )}
+        )} */}
 
         {/* Switch de Idiomas a la derecha */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginLeft: 'auto' }}>

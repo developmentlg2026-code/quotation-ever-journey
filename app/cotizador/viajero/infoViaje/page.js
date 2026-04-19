@@ -241,7 +241,7 @@ export default function InfoPlanesPage() {
                     value={formData.origen} 
                     onChange={handleChange} 
                     variant="outlined" 
-                    required
+                    
                   >
                     <MenuItem value="Venezuela">Venezuela</MenuItem>
                     <MenuItem value="Panamá">Panamá</MenuItem>
@@ -256,7 +256,7 @@ export default function InfoPlanesPage() {
                     value={formData.destino} 
                     onChange={handleChange} 
                     variant="outlined" 
-                    required
+                    
                   >
                     <MenuItem value="América del Sur">América del Sur</MenuItem>
                     <MenuItem value="Estados Unidos - Canadá">Estados Unidos - Canadá</MenuItem>
@@ -267,17 +267,17 @@ export default function InfoPlanesPage() {
                 </Grid>
                 
                 <Grid size={{ xs:12, sm:6 }}>
-                  <TextField fullWidth label="Fecha de ida" name="fechaIda" type="date" value={formData.fechaIda} onChange={handleChange} InputLabelProps={{ shrink: true }} required />
+                  <TextField fullWidth label="Fecha de ida" name="fechaIda" type="date" value={formData.fechaIda} onChange={handleChange} InputLabelProps={{ shrink: true }}  />
                 </Grid>
                 <Grid size={{ xs:12, sm:6 }}>
-                  <TextField fullWidth label="Fecha de vuelta" name="fechaVuelta" type="date" value={formData.fechaVuelta} onChange={handleChange} InputLabelProps={{ shrink: true }} required />
+                  <TextField fullWidth label="Fecha de vuelta" name="fechaVuelta" type="date" value={formData.fechaVuelta} onChange={handleChange} InputLabelProps={{ shrink: true }}  />
                 </Grid>
                 
                 <Grid size={{ xs:12, sm:6 }}>
-                  <TextField fullWidth label="Cantidad de pasajeros" name="cantidadPasajeros" type="number" InputProps={{ inputProps: { min: 1 } }} value={formData.cantidadPasajeros} onChange={handleChange} variant="outlined" required />
+                  <TextField fullWidth label="Cantidad de pasajeros" name="cantidadPasajeros" type="number" InputProps={{ inputProps: { min: 1 } }} value={formData.cantidadPasajeros} onChange={handleChange} variant="outlined"  />
                 </Grid>
                 <Grid size={{ xs:12, sm:6 }}>
-                  <TextField fullWidth label="Edades de los pasajeros" name="edades" value={formData.edades} onChange={handleChange} variant="outlined" placeholder="Ej. 25-30-8" required />
+                  <TextField fullWidth label="Edades de los pasajeros" name="edades" value={formData.edades} onChange={handleChange} variant="outlined" placeholder="Ej. 25-30-8"  />
                 </Grid>
               </Grid>
             </Paper>
@@ -302,16 +302,16 @@ export default function InfoPlanesPage() {
               </Typography>
               <Grid container spacing={3}>
                 <Grid size={{ xs:12, sm:6 }}>
-                  <TextField fullWidth label="Nombres" name="contactoNombres" value={formData.contactoNombres} onChange={handleChange} variant="outlined" required />
+                  <TextField fullWidth label="Nombres" name="contactoNombres" value={formData.contactoNombres} onChange={handleChange} variant="outlined"  />
                 </Grid>
                 <Grid size={{ xs:12, sm:6 }}>
-                  <TextField fullWidth label="Apellidos" name="contactoApellidos" value={formData.contactoApellidos} onChange={handleChange} variant="outlined" required />
+                  <TextField fullWidth label="Apellidos" name="contactoApellidos" value={formData.contactoApellidos} onChange={handleChange} variant="outlined"  />
                 </Grid>
                 <Grid size={{ xs:12, sm:6 }}>
-                  <TextField fullWidth label="Número Telefónico" name="contactoTelefono" type="tel" value={formData.contactoTelefono} onChange={handleChange} variant="outlined" placeholder="Ej. (0414)202-31-81" required />
+                  <TextField fullWidth label="Número Telefónico" name="contactoTelefono" type="tel" value={formData.contactoTelefono} onChange={handleChange} variant="outlined" placeholder="Ej. (0414)202-31-81"  />
                 </Grid>
                 <Grid size={{ xs:12, sm:6 }}>
-                  <TextField fullWidth label="Correo Electrónico" name="contactoCorreo" type="email" value={formData.contactoCorreo} onChange={handleChange} variant="outlined" required />
+                  <TextField fullWidth label="Correo Electrónico" name="contactoCorreo" type="email" value={formData.contactoCorreo} onChange={handleChange} variant="outlined"  />
                 </Grid>
               </Grid>
             </Paper>
