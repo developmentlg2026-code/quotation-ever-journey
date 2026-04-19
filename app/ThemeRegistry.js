@@ -63,9 +63,9 @@ export default function ThemeRegistry({ children }) {
           maxWidth: '1200px', // Evita que se estire demasiado en monitores grandes
           margin: '0 auto', // Centra el contenido en escritorio
           // px: Padding en el eje X. xs=móvil, sm=tablet, md/lg=escritorio
-          px: { xs: 2, sm: 4, md: 6, lg: 8 }, 
+          px: { xs: 0, sm: 4, md: 6, lg: 8 }, 
           // py: Padding en el eje Y.
-          py: { xs: 2, sm: 4, md: 6 },
+          py: { xs: 1, sm: 4, md: 2 },
         }}
       >
         {children}

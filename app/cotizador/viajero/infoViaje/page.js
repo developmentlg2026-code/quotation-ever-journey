@@ -15,7 +15,7 @@ import {
   MenuItem
 } from '@mui/material';
 import { motion } from 'motion/react';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 // Reutilizamos el tema de la sección de viajeros para mantener la consistencia
@@ -162,6 +162,21 @@ export default function InfoPlanesPage() {
       >
         <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1, py: { xs: 4, md: 8 }, px: { xs: 2, md: 4 } }}>
           
+          {/* Botón Volver */}
+          <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 2 }}>
+            <Button
+              startIcon={<ChevronLeft />}
+              onClick={() => router.push('/cotizador/viajero')}
+              sx={{
+                color: 'text.secondary',
+                fontSize: '1rem',
+                '&:hover': { background: 'transparent', textDecoration: 'underline', color: 'primary.main' }
+              }}
+            >
+              Volver
+            </Button>
+          </Box>
+
           {/* Título */}
           <Box
             component={motion.div}

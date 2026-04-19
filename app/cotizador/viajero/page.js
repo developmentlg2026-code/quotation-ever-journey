@@ -92,7 +92,7 @@ export default function Page() {
         }}
       >
      
-        <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1, py: 6, px: { xs: 4, md: 4 } }}>
+        <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1, pb: 6, px: { xs: 4, md: 4 } }}>
           {/* Header */}
           
           
@@ -184,7 +184,7 @@ export default function Page() {
               transition={{ delay: 1.1 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => router.push('/cotizador/viajero/infoPasajeros')}
+              onClick={() => router.push('/cotizador/viajero/infoViaje')}
               endIcon={<ChevronRight />}
               sx={{
                 px: { xs: 4, md: 6 },
