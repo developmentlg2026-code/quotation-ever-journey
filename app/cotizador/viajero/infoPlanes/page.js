@@ -21,7 +21,8 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Divider
+  Divider,
+  useMediaQuery
 } from '@mui/material';
 import { motion } from 'motion/react';
 import { ChevronLeft, User, Users, Briefcase, Mountain, ShieldCheck, ChevronRight, X, CheckCircle2, Info } from 'lucide-react';
@@ -134,6 +135,8 @@ export default function InfoPlanesPage() {
   // Estado para el modal
   const [openModal, setOpenModal] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
+
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleOpenModal = (plan) => {
     setSelectedPlan(plan);
@@ -354,9 +357,10 @@ export default function InfoPlanesPage() {
             scroll="paper"
             maxWidth="sm"
             fullWidth
+            fullScreen={isMobile}
             PaperProps={{ 
               sx: { 
-                borderRadius: 4, 
+                borderRadius: { xs: 0, sm: 4 }, 
                 p: 0
               } 
             }}
