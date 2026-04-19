@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   Box, 
   Typography, 
@@ -10,6 +10,7 @@ import {
   StepLabel
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useRouter } from 'next/navigation';
 
 // Importamos los estilos
 import * as S from './Home.styles';
@@ -24,6 +25,12 @@ import Step3Content from './components/Step3Content';
 import Step4Content from './components/Step4Content'; // NUEVO COMPONENTE
 
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push('/cotizador/viajero');
+  }, [router]);
+
   const [step, setStep] = useState(1);
   const [expanded, setExpanded] = useState('panel1');
 
