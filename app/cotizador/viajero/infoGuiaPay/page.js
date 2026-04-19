@@ -81,7 +81,7 @@ export default function infoGuiaPay() {
 
   const handleNext = () => {
     // Avanzar al siguiente paso del flujo
-    router.push('/cotizador/viajero/paso-siguiente');
+    router.push('/cotizador/viajero/infoCompra');
   };
 
   return (
