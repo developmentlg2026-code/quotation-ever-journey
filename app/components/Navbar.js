@@ -1,12 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { AppBar, Toolbar, Typography, Switch, Box } from '@mui/material';
 
 export default function Navbar() {
   // Estado para controlar el idioma. 
   // false = Español (por defecto), true = Portugués
   const [isPortuguese, setIsPortuguese] = useState(false);
+
+  const pathname = usePathname();
 
   const handleLanguageChange = (event) => {
     setIsPortuguese(event.target.checked);
@@ -19,19 +22,21 @@ export default function Navbar() {
       <Toolbar sx={{ position: 'relative' }}>
         
         {/* Logo (Izquierda en móvil, Centrado en pantallas más grandes) */}
-        <Box sx={{
-          position: { xs: 'static', sm: 'absolute' },
-          left: { xs: 'auto', sm: '50%' },
-          top: { xs: 'auto', sm: '50%' },
-          transform: { xs: 'none', sm: 'translate(-50%, -50%)' },
-        }}>
-          <Box 
-            component="img"
-            src="/static/banner/ever-journey-banner2.png"
-            alt="Ever Journey"
-            sx={{ height: 50, objectFit: 'contain' }} // Ajusta el alto según prefieras
-          />
-        </Box>
+        {pathname !== '/cotizador/viajero' && (
+          <Box sx={{
+            position: { xs: 'static', sm: 'absolute' },
+            left: { xs: 'auto', sm: '50%' },
+            top: { xs: 'auto', sm: '50%' },
+            transform: { xs: 'none', sm: 'translate(-50%, -50%)' },
+          }}>
+            <Box 
+              component="img"
+              src="/static/banner/ever-journey-banner2.png"
+              alt="Ever Journey"
+              sx={{ height: 50, objectFit: 'contain' }} // Ajusta el alto según prefieras
+            />
+          </Box>
+        )}
 
         {/* Switch de Idiomas a la derecha */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginLeft: 'auto' }}>
