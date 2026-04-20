@@ -136,7 +136,7 @@ export default function Page() {
               }}
             />
 
-            <Stack spacing={{ xs: 3, sm: 12 }}>
+            <Stack spacing={{ xs: 8, sm: 12 }}>
               <TimelineRow side="right" icon={ASSETS.step1Icon} text="Tu póliza de viaje a un escaneo de distancia. Sin papeles, sin esperas y con tecnología OCR." delay={0.4} />
               <TimelineRow side="left" icon={ASSETS.step2Icon} text="Ante cualquier imprevisto, no tendrás que esperar. Garantizamos atención inmediata y la liquidación directa." delay={0.6} />
               <TimelineRow side="right" icon={ASSETS.step3Icon} text="Viaja con la tranquilidad de tener fondos siempre a mano. Con GuiaPay, la inmediatez es total." delay={0.8} />
@@ -144,7 +144,7 @@ export default function Page() {
           </Box>
 
           {/* CTA: Aumenté el mt (margin top) para bajarlo más */}
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: { xs: 4, md: 8 } }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: { xs: 10, md: 8 } }}>
             <MotionButton
               variant="contained"
               size="large"
