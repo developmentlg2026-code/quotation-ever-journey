@@ -10,13 +10,10 @@ import {
   createTheme,
   CssBaseline,
   Paper,
-  TextField,
-  InputAdornment,
-  Link,
   Divider
 } from '@mui/material';
 import { motion } from 'motion/react';
-import { User, KeyRound, Fingerprint, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Info } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 // Tema consistente con el resto de la aplicación
@@ -58,25 +55,8 @@ const ASSETS = {
 export default function infoGuiaPay() {
   const router = useRouter();
   
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
-
-  const handleChange = (field) => (event) => {
-    setFormData({
-      ...formData,
-      [field]: event.target.value,
-    });
-  };
-
   const handleBack = () => {
     router.back();
-  };
-
-  const handleLogin = () => {
-    console.log('Iniciando sesión en GuíaPay...', formData);
-    // Lógica de autenticación aquí
   };
 
   const handleNext = () => {
@@ -165,7 +145,7 @@ export default function infoGuiaPay() {
             <Divider sx={{ borderColor: 'primary.main', borderWidth: 1, width: '60%', mx: 'auto', opacity: 0.5 }} />
           </Box>
 
-          {/* Contenedor Central (Tarjeta de Login con estilo de la app) */}
+        {/* Contenedor Central (Mensaje Informativo) */}
           <Box
             component={motion.div}
             initial={{ opacity: 0, scale: 0.95 }}
@@ -175,137 +155,32 @@ export default function infoGuiaPay() {
           >
             <Paper
               elevation={0}
+            component={motion.div}
+              animate={{ opacity: [0, 1, 0] }}
+            transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
               sx={{
                 p: { xs: 4, md: 5 },
                 width: '100%',
                 maxWidth: 420,
                 borderRadius: 4,
-                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 100%)',
-                border: '1px solid rgba(255, 255, 255, 0.4)',
-                borderTop: '1px solid rgba(255, 255, 255, 0.8)',
-                borderLeft: '1px solid rgba(255, 255, 255, 0.8)',
+              background: 'rgba(0, 126, 188, 0.05)',
+              border: '1px solid rgba(0, 126, 188, 0.3)',
                 backdropFilter: 'blur(10px)',
                 boxShadow: '0 16px 48px 0 rgba(0, 51, 102, 0.15)',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+              textAlign: 'center',
+              gap: 2
               }}
             >
-              {/* Logo Mockeado GuíaPay */}
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 5 }}>
-                <Typography variant="h3" sx={{ fontWeight: 800, color: 'primary.dark', letterSpacing: '-1px' }}>
-                  Guía
-                </Typography>
-                <Typography variant="h3" sx={{ fontWeight: 500, color: 'info.main', letterSpacing: '-1px' }}>
-                  pay
-                </Typography>
-              </Box>
-
-              {/* Formulario */}
-              <Box sx={{ width: '100%', mb: 2 }}>
-                <Typography variant="caption" sx={{ color: 'primary.dark', fontWeight: 700, display: 'block', mb: 1 }}>
-                  Ingrese tu E-mail
-                </Typography>
-                <TextField
-                  fullWidth
-                  placeholder="Ingrese su email"
-                  variant="outlined"
-                  value={formData.email}
-                  onChange={handleChange('email')}
-                  sx={{ backgroundColor: '#ffffff', mb: 3, borderRadius: 1 }}
-                  slotProps={{
-                    input: {
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <User size={18} color="#4a6078" />
-                        </InputAdornment>
-                      ),
-                    }
-                  }}
-                />
-
-                <Typography variant="caption" sx={{ color: 'primary.dark', fontWeight: 700, display: 'block', mb: 1 }}>
-                  Ingresa tu contraseña
-                </Typography>
-                <TextField
-                  fullWidth
-                  placeholder="Contraseña"
-                  type="password"
-                  variant="outlined"
-                  value={formData.password}
-                  onChange={handleChange('password')}
-                  sx={{ backgroundColor: '#ffffff', mb: 2, borderRadius: 1 }}
-                  slotProps={{
-                    input: {
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <KeyRound size={18} color="#4a6078" />
-                        </InputAdornment>
-                      ),
-                    }
-                  }}
-                />
-              </Box>
-
-              {/* Olvidaste Contraseña */}
-              <Link 
-                href="#" 
-                underline="none" 
-                sx={{ 
-                  color: 'text.secondary', 
-                  fontSize: '0.75rem', 
-                  fontWeight: 700, 
-                  mb: 4,
-                  alignSelf: 'flex-end',
-                  '&:hover': { color: 'primary.main', textDecoration: 'underline' }
-                }}
-              >
-                ¿OLVIDASTE LA CONTRASEÑA?
-              </Link>
-
-              {/* Botón ENTRAR (Ajustado al estilo de la app) */}
-              <Button
-                variant="contained"
-                fullWidth
-                onClick={handleLogin}
-                sx={{
-                  py: 1.5,
-                  mb: 4,
-                  fontSize: '1rem',
-                  borderRadius: '9999px',
-                  boxShadow: '0 8px 16px rgba(0, 126, 188, 0.2)',
-                  background: 'linear-gradient(to right, #007ebc, #004b8d)',
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    transform: 'translateY(-2px)',
-                    boxShadow: '0 12px 20px rgba(0, 126, 188, 0.3)',
-                  }
-                }}
-              >
-                Entrar
-              </Button>
-
-              {/* Huella Dactilar */}
-              <Box sx={{ mb: 3, cursor: 'pointer', color: 'primary.main', transition: 'all 0.2s', '&:hover': { color: 'primary.dark', transform: 'scale(1.05)' } }}>
-                <Fingerprint size={56} strokeWidth={1.5} />
-              </Box>
-
-              {/* Crear Cuenta */}
-              <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
-                ¿No tienes cuenta aún?
-              </Typography>
-              <Link 
-                href="#" 
-                underline="none" 
-                sx={{ 
-                  color: 'primary.main', 
-                  fontSize: '1.1rem', 
-                  fontWeight: 700,
-                  '&:hover': { color: 'primary.dark', textDecoration: 'underline' }
-                }}
-              >
-                Crear cuenta
-              </Link>
+            <Info size={48} color="#007ebc" />
+            <Typography variant="h5" sx={{ fontWeight: 700, color: 'primary.main' }}>
+              Proceso de registro a wallet GuiaPay
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              Serás redirigido a la plataforma para completar tu registro de manera segura.
+            </Typography>
             </Paper>
           </Box>
 
