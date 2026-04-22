@@ -140,19 +140,19 @@ export default function Page() {
           }
         }}
       >
-        <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1, pb: 4, px: { xs: 2, md: 4 }, pt: { xs: 2, md: 4 } }}>
+        
           <Box
             component="section"
             sx={{
               position: 'relative',
               minHeight: '400px',
               display: 'flex',
-              alignItems: 'center',
+              alignItems: 'flex-end',
               justifyContent: 'center',
-              py: 8,
+              // py: 8, // Removed to allow content to sit at the bottom
               overflow: 'hidden',
               scrollMarginTop: '20px',
-              borderRadius: 4,
+              borderRadius: 0,
               width: '100%',
               boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
             }}
@@ -194,34 +194,22 @@ export default function Page() {
                 zIndex: 1,
               }}
             />
-            <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
+            <Container maxWidth={false} sx={{ position: 'relative', zIndex: 2, width: '100%', px: 0 }}>
               <Box
                 sx={{
                   textAlign: 'center',
                   color: 'white',
-                  p: {xs: 2, md: 4},
-                  borderRadius: 4,
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  backdropFilter: 'blur(2px)',
-                  border: '2px solid rgba(255, 255, 255, 0.2)',
-                  maxWidth: '800px',
-                  mx: 'auto',
+                  py: 3,
+                  px: { xs: 2, md: 4 },
+                  borderRadius: 0,
+                  background: 'rgba(0, 0, 0, 0.3)',
+                  backdropFilter: 'blur(5px)',
+                  width: '100%',
                 }}
               >
-                <Typography
-                  variant="h2"
-                  component="h2"
-                  sx={{
-                    fontWeight: 800,
-                    fontSize: { xs: '1.8rem', md: '2.5rem' },
-                    textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
-                  }}
-                >
-                  Tu Asistencia de Viaje Inteligente
-                </Typography>
                 
                 {/* Dynamic Text Container */}
-                <Box sx={{ position: 'relative', height: { xs: '80px', sm: '60px', md: '50px' }, mt: 3 }}>
+                <Box sx={{ position: 'relative', height: { xs: '60px', md: '40px' } }}>
                   {CAROUSEL_ITEMS.map((item, index) => (
                     <Typography
                       key={`text-${index}`}
@@ -231,7 +219,7 @@ export default function Page() {
                         position: 'absolute',
                         width: '100%',
                         fontWeight: 400,
-                        fontSize: { xs: '0.95rem', md: '1.2rem' },
+                        fontSize: { xs: '0.9rem', md: '1.1rem' },
                         textShadow: '1px 1px 3px rgba(0,0,0,0.4)',
                         opacity: currentSlide === index ? 1 : 0,
                         transform: currentSlide === index ? 'translateY(0)' : 'translateY(15px)',
@@ -300,9 +288,25 @@ export default function Page() {
               ))}
             </Box>
           </Box>
-
-          {/* CTA: Aumenté el mt (margin top) para bajarlo más */}
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: { xs: 10, md: 8 } }}>
+          <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1, pb: 4, px: { xs: 2, md: 4 }, pt: { xs: 2, md: 4 } }}>
+            <Typography
+              variant="h4"
+              component="h1"
+              sx={{
+                textAlign: 'center',
+                fontWeight: 800,
+                color: 'primary.main',
+                fontSize: { xs: '1.8rem', md: '2.5rem' },
+                mt: { xs: 6, md: 6 },
+                mb: { xs: 4, md: 4 },
+                lineHeight: 1.2,
+              }}
+            >
+              Adquiere tu Póliza de asistencia al viajero
+            </Typography>
+          </Container>
+          {/* CTA */}
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <MotionButton
               variant="contained"
               size="large"
@@ -325,7 +329,7 @@ export default function Page() {
               Cotizar
             </MotionButton>
           </Box>
-        </Container>
+        
       </Box>
     </ThemeProvider>
   );
