@@ -56,10 +56,19 @@ export default function Page() {
   const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [useAlternateVideos, setUseAlternateVideos] = useState(false);
   const intervalRef = useRef(null);
   const DURATION = 7000; // 7 segundos por slide
 
-  const CAROUSEL_ITEMS = [
+  // Leer el estado inicial desde localStorage y escuchar eventos del Navbar
+  useEffect(() => {
+    setUseAlternateVideos(localStorage.getItem('altVideos') === 'true');
+    const handleToggle = (e) => setUseAlternateVideos(e.detail);
+    window.addEventListener('toggleAltVideos', handleToggle);
+    return () => window.removeEventListener('toggleAltVideos', handleToggle);
+  }, []);
+
+  const CAROUSEL_ITEMS_1 = [
     {
       video: '/videos/viajeros/home/video1.mp4',
       text: 'Tu póliza de viaje a un escaneo de distancia. Sin papeles, sin esperas y con tecnología OCR.',
@@ -74,9 +83,32 @@ export default function Page() {
     },
   ];
 
+  const CAROUSEL_ITEMS_2 = [
+    {
+      video: '/videos/viajeros/home/video4.mp4',
+      text: 'Explora nuevos destinos con la seguridad de estar protegido ante cualquier eventualidad.',
+    },
+    {
+      video: '/videos/viajeros/home/video5.mp4',
+      text: 'Asistencia 24/7 en cualquier lugar del mundo. Tu tranquilidad es nuestra prioridad.',
+    },
+    {
+      video: '/videos/viajeros/home/video6.mp4',
+      text: 'Protección integral para ti y tu equipaje en cada aventura que emprendas.',
+    },
+  ];
+
+  const activeCarouselItems = useAlternateVideos ? CAROUSEL_ITEMS_2 : CAROUSEL_ITEMS_1;
+
+  // Reiniciar el progreso y el slide al cambiar el grupo de videos
+  useEffect(() => {
+    setCurrentSlide(0);
+    setProgress(0);
+  }, [useAlternateVideos]);
+
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide(prev => (prev + 1) % CAROUSEL_ITEMS.length);
+      setCurrentSlide(prev => (prev + 1) % activeCarouselItems.length);
     }, DURATION);
 
     let progressTimer;
@@ -97,7 +129,7 @@ export default function Page() {
       clearInterval(timer);
       cancelAnimationFrame(progressTimer);
     };
-  }, [currentSlide]);
+  }, [currentSlide, activeCarouselItems.length]);
 
   const goToSlide = (index) => {
     setCurrentSlide(index);
@@ -145,7 +177,7 @@ export default function Page() {
             component="section"
             sx={{
               position: 'relative',
-              minHeight: '400px',
+              minHeight: { xs: '300px', md: '400px' },
               display: 'flex',
               alignItems: 'flex-end',
               justifyContent: 'center',
@@ -155,10 +187,11 @@ export default function Page() {
               borderRadius: 0,
               width: '100%',
               boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+              bgcolor: '#000',
             }}
           >
             {/* Carousel Background Videos */}
-            {CAROUSEL_ITEMS.map((item, index) => (
+            {activeCarouselItems.map((item, index) => (
               <Box
                 key={item.video}
                 component="video"
@@ -168,7 +201,7 @@ export default function Page() {
                   left: 0,
                   width: '100%',
                   height: '100%',
-                  objectFit: 'cover',
+                  objectFit: { xs: 'contain', md: 'cover' },
                   zIndex: 0,
                   opacity: currentSlide === index ? 1 : 0,
                   transition: 'opacity 1.5s ease-in-out',
@@ -210,7 +243,7 @@ export default function Page() {
                 
                 {/* Dynamic Text Container */}
                 <Box sx={{ position: 'relative', height: { xs: '60px', md: '40px' } }}>
-                  {CAROUSEL_ITEMS.map((item, index) => (
+                  {activeCarouselItems.map((item, index) => (
                     <Typography
                       key={`text-${index}`}
                       variant="h5"
@@ -268,7 +301,7 @@ export default function Page() {
                 gap: 1.5,
               }}
             >
-              {CAROUSEL_ITEMS.map((_, index) => (
+                {activeCarouselItems.map((_, index) => (
                 <Box
                   key={index}
                   onClick={() => goToSlide(index)}
@@ -289,6 +322,7 @@ export default function Page() {
             </Box>
           </Box>
           <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1, pb: 4, px: { xs: 2, md: 4 }, pt: { xs: 2, md: 4 } }}>
+            
             <Typography
               variant="h4"
               component="h1"
@@ -296,13 +330,13 @@ export default function Page() {
                 textAlign: 'center',
                 fontWeight: 800,
                 color: 'primary.main',
-                fontSize: { xs: '1.8rem', md: '2.5rem' },
-                mt: { xs: 6, md: 6 },
+                fontSize: { xs: '1.2rem', md: '2.5rem' },
+                mt: { xs: 2, md: 6 },
                 mb: { xs: 4, md: 4 },
                 lineHeight: 1.2,
               }}
             >
-              Adquiere tu Póliza de asistencia al viajero
+              Pólizas de asistencias al viajero
             </Typography>
           </Container>
           {/* CTA */}
@@ -326,7 +360,7 @@ export default function Page() {
                 background: 'linear-gradient(to right, #004b8d, #002d5a)',
               }}
             >
-              Cotizar
+              Adquierela ya
             </MotionButton>
           </Box>
         

@@ -1,15 +1,29 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { AppBar, Toolbar, Typography, Switch, Box } from '@mui/material';
+import { AppBar, Toolbar, Typography, Switch, Box, FormControlLabel } from '@mui/material';
 
 export default function Navbar() {
   // Estado para controlar el idioma. 
   // false = Español (por defecto), true = Portugués
   const [isPortuguese, setIsPortuguese] = useState(false);
+  const [altVideos, setAltVideos] = useState(false);
 
   const pathname = usePathname();
+
+  // Sincronizar estado inicial desde localStorage
+  useEffect(() => {
+    setAltVideos(localStorage.getItem('altVideos') === 'true');
+  }, []);
+
+  // Disparar evento para que la página de viajeros se entere del cambio
+  const handleAltVideosChange = (event) => {
+    const isChecked = event.target.checked;
+    setAltVideos(isChecked);
+    localStorage.setItem('altVideos', isChecked);
+    window.dispatchEvent(new CustomEvent('toggleAltVideos', { detail: isChecked }));
+  };
 
   const handleLanguageChange = (event) => {
     setIsPortuguese(event.target.checked);
@@ -40,6 +54,23 @@ export default function Navbar() {
 
         {/* Switch de Idiomas a la derecha */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginLeft: 'auto' }}>
+          
+          {/* Switch para cambiar los videos, solo visible en la página correspondiente */}
+          {pathname === '/cotizador/viajero' && (
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={altVideos}
+                  onChange={handleAltVideosChange}
+                  color="primary"
+                  size="small"
+                />
+              }
+              label={<Typography variant="body2" sx={{ fontWeight: 600, color: 'primary.main' }}>Cambiar Vista</Typography>}
+              sx={{ mr: 2 }}
+            />
+          )}
+
           <Typography sx={{ fontSize: '1.5rem', lineHeight: 1 }}>🇪🇸</Typography>
           
           <Switch
