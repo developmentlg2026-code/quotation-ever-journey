@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Box, 
   Typography, 
@@ -54,6 +54,54 @@ const MotionButton = motion(Button);
 
 export default function Page() {
   const router = useRouter();
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const intervalRef = useRef(null);
+  const DURATION = 7000; // 7 segundos por slide
+
+  const CAROUSEL_ITEMS = [
+    {
+      video: '/videos/viajeros/home/video1.mp4',
+      text: 'Tu póliza de viaje a un escaneo de distancia. Sin papeles, sin esperas y con tecnología OCR.',
+    },
+    {
+      video: '/videos/viajeros/home/video2.mp4',
+      text: 'Ante cualquier imprevisto, no tendrás que esperar. Garantizamos atención inmediata y la liquidación directa.',
+    },
+    {
+      video: '/videos/viajeros/home/video3.mp4',
+      text: 'Viaja con la tranquilidad de tener fondos siempre a mano. Con GuiaPay, la inmediatez es total.',
+    },
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % CAROUSEL_ITEMS.length);
+    }, DURATION);
+
+    let progressTimer;
+    let startTime = Date.now();
+
+    const updateProgress = () => {
+      const elapsedTime = Date.now() - startTime;
+      const newProgress = Math.min((elapsedTime / DURATION) * 100, 100);
+      setProgress(newProgress);
+      if (newProgress < 100) {
+        progressTimer = requestAnimationFrame(updateProgress);
+      }
+    };
+
+    progressTimer = requestAnimationFrame(updateProgress);
+
+    return () => {
+      clearInterval(timer);
+      cancelAnimationFrame(progressTimer);
+    };
+  }, [currentSlide]);
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -93,54 +141,164 @@ export default function Page() {
         }}
       >
         <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1, pb: 4, px: { xs: 2, md: 4 }, pt: { xs: 2, md: 4 } }}>
-          
-          <MotionBox
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
-            sx={{ mb: { xs: 2, md: 10 } }} 
+          <Box
+            component="section"
+            sx={{
+              position: 'relative',
+              minHeight: '400px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              py: 8,
+              overflow: 'hidden',
+              scrollMarginTop: '20px',
+              borderRadius: 4,
+              width: '100%',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+            }}
           >
-            <Typography
-              variant="h4"
-              component="h1"
-              sx={{
-                textAlign: 'center',
-                fontWeight: 800,
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-                color: 'primary.main',
-                lineHeight: 1.2,
-                fontSize: { xs: '1.1rem', sm: '1.75rem', md: '2.25rem' },
-                maxWidth: '800px',
-                mx: 'auto'
-              }}
-            >
-              Adquiere de una forma rápida tu póliza asistencia al viajero
-            </Typography>
-          </MotionBox>
-
-          {/* Timeline: Aumenté el spacing a 3 en xs para mayor separación */}
-          <Box sx={{ position: 'relative', mb: { xs: 4, md: 8 }, px: { xs: 1, sm: 0 } }}>
+            {/* Carousel Background Videos */}
+            {CAROUSEL_ITEMS.map((item, index) => (
+              <Box
+                key={item.video}
+                component="video"
+                sx={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  zIndex: 0,
+                  opacity: currentSlide === index ? 1 : 0,
+                  transition: 'opacity 1.5s ease-in-out',
+                }}
+                autoPlay
+                loop
+                muted
+                playsInline
+              >
+                <source src={item.video} type="video/mp4" />
+              </Box>
+            ))}
+            
+            {/* Dark overlay */}
             <Box
               sx={{
                 position: 'absolute',
-                left: { xs: '25px', sm: '50%' },
                 top: 0,
+                left: 0,
+                right: 0,
                 bottom: 0,
-                width: '4px',
-                transform: 'translateX(-50%)',
-                background: 'linear-gradient(to bottom, #4DA6FF, #004b8d, #4DA6FF)',
-                boxShadow: '0 0 15px rgba(77, 166, 255, 0.4)',
-                borderRadius: '2px',
-                zIndex: 0,
+                background: 'linear-gradient(135deg, rgb(10 37 64 / 56%) 0%, rgb(30 73 118 / 39%) 50%, rgb(43 90 142 / 54%) 100%)',
+                zIndex: 1,
               }}
             />
+            <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
+              <Box
+                sx={{
+                  textAlign: 'center',
+                  color: 'white',
+                  p: {xs: 2, md: 4},
+                  borderRadius: 4,
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(2px)',
+                  border: '2px solid rgba(255, 255, 255, 0.2)',
+                  maxWidth: '800px',
+                  mx: 'auto',
+                }}
+              >
+                <Typography
+                  variant="h2"
+                  component="h2"
+                  sx={{
+                    fontWeight: 800,
+                    fontSize: { xs: '1.8rem', md: '2.5rem' },
+                    textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+                  }}
+                >
+                  Tu Asistencia de Viaje Inteligente
+                </Typography>
+                
+                {/* Dynamic Text Container */}
+                <Box sx={{ position: 'relative', height: { xs: '80px', sm: '60px', md: '50px' }, mt: 3 }}>
+                  {CAROUSEL_ITEMS.map((item, index) => (
+                    <Typography
+                      key={`text-${index}`}
+                      variant="h5"
+                      component="p"
+                      sx={{
+                        position: 'absolute',
+                        width: '100%',
+                        fontWeight: 400,
+                        fontSize: { xs: '0.95rem', md: '1.2rem' },
+                        textShadow: '1px 1px 3px rgba(0,0,0,0.4)',
+                        opacity: currentSlide === index ? 1 : 0,
+                        transform: currentSlide === index ? 'translateY(0)' : 'translateY(15px)',
+                        transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+                        color: '#e2f1ff',
+                      }}
+                    >
+                      {item.text}
+                    </Typography>
+                  ))}
+                </Box>
+              </Box>
+            </Container>
 
-            <Stack spacing={{ xs: 8, sm: 12 }}>
-              <TimelineRow side="right" icon={ASSETS.step1Icon} text="Tu póliza de viaje a un escaneo de distancia. Sin papeles, sin esperas y con tecnología OCR." delay={0.4} />
-              <TimelineRow side="left" icon={ASSETS.step2Icon} text="Ante cualquier imprevisto, no tendrás que esperar. Garantizamos atención inmediata y la liquidación directa." delay={0.6} />
-              <TimelineRow side="right" icon={ASSETS.step3Icon} text="Viaja con la tranquilidad de tener fondos siempre a mano. Con GuiaPay, la inmediatez es total." delay={0.8} />
-            </Stack>
+            {/* Progress Bar */}
+            <Box
+              sx={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: '6px',
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                zIndex: 3,
+              }}
+            >
+              <Box
+                sx={{
+                  height: '100%',
+                  width: `${progress}%`,
+                  background: 'linear-gradient(135deg, #0992b1 0%, #4ec0b1 100%)',
+                  transition: progress < 5 ? 'none' : 'width 0.05s linear',
+                }}
+              />
+            </Box>
+
+            {/* Dot Indicators */}
+            <Box
+              sx={{
+                position: 'absolute',
+                bottom: 20,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                zIndex: 3,
+                display: 'flex',
+                gap: 1.5,
+              }}
+            >
+              {CAROUSEL_ITEMS.map((_, index) => (
+                <Box
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  sx={{
+                    width: '12px',
+                    height: '12px',
+                    borderRadius: '50%',
+                    backgroundColor: currentSlide === index ? '#4ec0b1' : 'rgba(255, 255, 255, 0.5)',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    border: currentSlide === index ? '2px solid white' : '2px solid transparent',
+                    '&:hover': {
+                      transform: 'scale(1.2)',
+                    },
+                  }}
+                />
+              ))}
+            </Box>
           </Box>
 
           {/* CTA: Aumenté el mt (margin top) para bajarlo más */}
@@ -170,98 +328,5 @@ export default function Page() {
         </Container>
       </Box>
     </ThemeProvider>
-  );
-}
-
-function TimelineRow({ side, icon, text, delay }) {
-  const isRight = side === 'right';
-  
-  return (
-    <Box 
-      component={motion.div}
-      initial={{ opacity: 0, x: isRight ? 30 : -30 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay, duration: 0.6 }}
-      sx={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center',
-        flexDirection: { xs: 'row', sm: isRight ? 'row' : 'row-reverse' },
-        width: '100%',
-        position: 'relative',
-        gap: { xs: 1, sm: 0 }
-      }}
-    >
-      <Box sx={{ 
-        width: { xs: 'auto', sm: '45%' }, 
-        display: 'flex', 
-        justifyContent: { xs: 'flex-start', sm: isRight ? 'flex-end' : 'flex-start' }, 
-        pr: { xs: 0, sm: isRight ? 4 : 0 }, 
-        pl: { xs: 0, sm: isRight ? 0 : 4 },
-        zIndex: 1
-      }}>
-        <Box 
-          sx={{ 
-            width: { xs: 50, sm: 100, md: 140 }, 
-            height: { xs: 50, sm: 100, md: 140 }, 
-            p: { xs: 1, sm: 2, md: 3 },
-            bgcolor: 'white', 
-            borderRadius: { xs: 2, sm: 4 }, 
-            boxShadow: '0 8px 24px rgba(0,0,0,0.1)', 
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            border: '1px solid rgba(0, 51, 102, 0.05)',
-            flexShrink: 0,
-            '& img': { width: '100%', height: '100%', objectFit: 'contain' }
-          }}
-        >
-          <img src={icon} alt="Step icon" referrerPolicy="no-referrer" />
-        </Box>
-      </Box>
-
-      <Box 
-        sx={{ 
-          width: { xs: 14, sm: 24 }, 
-          height: { xs: 14, sm: 24 }, 
-          borderRadius: '50%', 
-          bgcolor: 'white', 
-          border: '4px solid #004b8d',
-          boxShadow: '0 0 10px rgba(77, 166, 255, 0.6)',
-          zIndex: 2,
-          position: 'absolute',
-          left: { xs: '25px', sm: '50%' },
-          transform: 'translateX(-50%)',
-          display: 'block'
-        }} 
-      />
-
-      <Box sx={{ 
-        width: { xs: '1fr', sm: '45%' }, 
-        pl: { xs: 1.5, sm: isRight ? 4 : 0 }, 
-        pr: { xs: 0, sm: isRight ? 0 : 4 },
-        textAlign: 'left'
-      }}>
-        <Typography 
-          variant="body1" 
-          sx={{ 
-            color: 'text.primary', 
-            fontWeight: 500, 
-            fontSize: { xs: '0.75rem', md: '1.1rem' },
-            lineHeight: 1.3,
-            bgcolor: { xs: 'rgba(255,255,255,0.85)', sm: 'rgba(255,255,255,0.7)' },
-            p: { xs: 1, md: 3 },
-            borderRadius: 2,
-            backdropFilter: 'blur(8px)',
-            border: '1px solid transparent',
-            boxShadow: { xs: '0 2px 10px rgba(0,0,0,0.05)', sm: 'none' },
-            transition: 'all 0.3s'
-          }}
-        >
-          {text}
-        </Typography>
-      </Box>
-    </Box>
   );
 }
