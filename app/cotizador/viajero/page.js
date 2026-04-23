@@ -332,12 +332,37 @@ export default function Page() {
                 color: 'primary.main',
                 fontSize: { xs: '1.2rem', md: '2.5rem' },
                 mt: { xs: 2, md: 6 },
-                mb: { xs: 4, md: 4 },
+            mb: 2,
                 lineHeight: 1.2,
               }}
             >
               Pólizas de asistencias al viajero
             </Typography>
+        <Typography
+          variant="h6"
+          sx={{
+            textAlign: 'center',
+            fontWeight: 500,
+            color: 'text.primary',
+            fontSize: { xs: '1rem', md: '1.25rem' },
+          }}
+        >
+          Lo más importante de tu viaje es que vuelvas bien. ❤️
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{
+            textAlign: 'center',
+            color: 'text.secondary',
+            fontSize: { xs: '0.9rem', md: '1.1rem' },
+            mt: 2,
+            mb: 2,
+            maxWidth: '700px',
+            mx: 'auto',
+          }}
+        >
+          Protege a quienes más quieres con la cobertura de salud más completa del mercado. Porque la tranquilidad de tu familia no tiene precio, pero nuestra asistencia es más accesible de lo que crees.
+        </Typography>
           </Container>
           {/* CTA */}
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -360,7 +385,7 @@ export default function Page() {
                 background: 'linear-gradient(to right, #004b8d, #002d5a)',
               }}
             >
-              Adquierela ya
+              Adquiérela ya
             </MotionButton>
           </Box>
         
