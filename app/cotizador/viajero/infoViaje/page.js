@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   Box, 
   Typography, 
@@ -12,10 +12,14 @@ import {
   Paper,
   Grid,
   TextField,
-  MenuItem
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  IconButton,
+  CircularProgress
 } from '@mui/material';
 import { motion } from 'motion/react';
-import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Upload, Eye, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 // Reutilizamos el tema de la sección de viajeros para mantener la consistencia
@@ -68,6 +72,55 @@ export default function InfoPlanesPage() {
     contactoCorreo: ''
   });
 
+  const boletoInputRef = useRef(null);
+  const [boletoImage, setBoletoImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+  const handleBoletoUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64String = reader.result;
+      setBoletoImage(base64String);
+      
+      setIsAnalyzing(true);
+      try {
+        const response = await fetch('/api/analizeAirTicket.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ imageBase64: base64String })
+        });
+        const result = await response.json();
+        
+        if (result.success && result.data && result.data.esBoletoValido) {
+          const { paisOrigen, paisDestino, fechaIda, fechaVuelta, cantidadPasajeros } = result.data;
+          
+          setFormData(prev => {
+            return {
+              ...prev,
+              origen: paisOrigen || prev.origen,
+              destino: paisDestino || prev.destino,
+              fechaIda: fechaIda || prev.fechaIda,
+              fechaVuelta: fechaVuelta || prev.fechaVuelta,
+              cantidadPasajeros: cantidadPasajeros || prev.cantidadPasajeros
+            };
+          });
+        } else if (result.data && !result.data.esBoletoValido) {
+          alert('La imagen no parece ser un boleto válido.');
+        }
+      } catch (error) {
+        console.error("Error analizando el boleto:", error);
+        alert('Hubo un problema al procesar la imagen del boleto.');
+      } finally {
+        setIsAnalyzing(false);
+      }
+    };
+    reader.readAsDataURL(file);
+    e.target.value = ''; // Reset para permitir subir la misma imagen
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     
@@ -117,7 +170,7 @@ export default function InfoPlanesPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Aquí puedes agregar la lógica para enviar al API o pasar a la siguiente pantalla
-    console.log("Datos del viaje:", formData);
+    console.log("Datos del viaje:", { ...formData, boletoImage });
     router.push('/cotizador/viajero/infoPlanes');
   };
 
@@ -231,39 +284,68 @@ export default function InfoPlanesPage() {
               <Typography variant="h6" sx={{ mb: 3, color: 'primary.main', fontWeight: 700 }}>
                 Datos del Viaje
               </Typography>
+
+              {/* Sección de Subida de Boleto */}
+              <Box sx={{ 
+                p: 3, 
+                mb: 4, 
+                borderRadius: 3, 
+                bgcolor: 'rgba(0, 75, 141, 0.03)', 
+                border: '1px dashed rgba(0, 75, 141, 0.2)',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center'
+              }}>
+                <Typography variant="subtitle2" sx={{ color: 'text.primary', mb: 2, fontWeight: 700 }}>
+                  ¿Tienes tu boleto a la mano?
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary', mb: 3, textAlign: 'center', maxWidth: '400px' }}>
+                  Puedes subir una imagen de tu boleto de viaje de forma opcional.
+                </Typography>
+                <input type="file" accept="image/*" ref={boletoInputRef} style={{ display: 'none' }} onChange={handleBoletoUpload} />
+                <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
+                  <Button 
+                    variant="outlined" 
+                    startIcon={isAnalyzing ? <CircularProgress size={18} /> : <Upload size={18} />} 
+                    onClick={() => boletoInputRef.current.click()}
+                    disabled={isAnalyzing}
+                    sx={{ borderRadius: '10px', textTransform: 'none', fontWeight: 600, borderColor: 'rgba(0, 75, 141, 0.3)' }}
+                  >
+                    {isAnalyzing ? 'Analizando...' : (boletoImage ? 'Cambiar Boleto' : 'Subir Boleto')}
+                  </Button>
+                  {boletoImage && (
+                    <Button 
+                      variant="outlined" 
+                      startIcon={<Eye size={18} />} 
+                      onClick={() => setPreviewImage(boletoImage)}
+                      sx={{ borderRadius: '10px', textTransform: 'none', fontWeight: 600, borderColor: 'rgba(0, 75, 141, 0.3)' }}
+                    >
+                      Ver Boleto
+                    </Button>
+                  )}
+                </Box>
+              </Box>
+
               <Grid container spacing={3}>
                 <Grid size={{ xs:12, sm:6 }} >
                   <TextField 
-                    select 
                     fullWidth 
                     label="Origen" 
                     name="origen" 
                     value={formData.origen} 
                     onChange={handleChange} 
                     variant="outlined" 
-                    
-                  >
-                    <MenuItem value="Venezuela">Venezuela</MenuItem>
-                    <MenuItem value="Panamá">Panamá</MenuItem>
-                  </TextField>
+                  />
                 </Grid>
                 <Grid size={{ xs:12, sm:6 }}>
                   <TextField 
-                    select
                     fullWidth 
                     label="Destino" 
                     name="destino" 
                     value={formData.destino} 
                     onChange={handleChange} 
                     variant="outlined" 
-                    
-                  >
-                    <MenuItem value="América del Sur">América del Sur</MenuItem>
-                    <MenuItem value="Estados Unidos - Canadá">Estados Unidos - Canadá</MenuItem>
-                    <MenuItem value="Europa">Europa</MenuItem>
-                    <MenuItem value="México, Am. Central y/o Caribe">México, Am. Central y/o Caribe</MenuItem>
-                    <MenuItem value="Resto del Mundo">Resto del Mundo</MenuItem>
-                  </TextField>
+                  />
                 </Grid>
                 
                 <Grid size={{ xs:12, sm:6 }}>
@@ -341,6 +423,23 @@ export default function InfoPlanesPage() {
               </Button>
             </Box>
           </Box>
+
+          {/* Modal de Previsualización de Imagen */}
+          <Dialog open={!!previewImage} onClose={() => setPreviewImage(null)} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: 4 } }}>
+            <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pb: 1 }}>
+              <Typography variant="h6" fontWeight={700} color="primary.main">
+                Boleto Adjunto
+              </Typography>
+              <IconButton onClick={() => setPreviewImage(null)} size="small" sx={{ color: 'text.secondary' }}>
+                <X size={20} />
+              </IconButton>
+            </DialogTitle>
+            <DialogContent dividers sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 3, bgcolor: '#f8fafc' }}>
+              {previewImage && (
+                <img src={previewImage} alt="Previsualización del boleto" style={{ maxWidth: '100%', maxHeight: '60vh', borderRadius: '8px', objectFit: 'contain', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
+              )}
+            </DialogContent>
+          </Dialog>
         </Container>
       </Box>
     </ThemeProvider>
