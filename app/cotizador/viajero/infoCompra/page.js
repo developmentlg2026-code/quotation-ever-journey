@@ -12,7 +12,7 @@ import {
   Paper,
 } from '@mui/material';
 import { motion } from 'motion/react';
-import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { ChevronRight, ChevronLeft, CheckCircle2, Smartphone, HeartHandshake } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 // Tema estrictamente consistente con el resto de la aplicación
@@ -64,22 +64,22 @@ export default function infoCompra() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      
+
       {/* Logo Header */}
-      <Box 
-        component="img" 
-        src={ASSETS.logo} 
-        alt="Ever Journey" 
-        sx={{ 
-          height: 'auto', 
+      <Box
+        component="img"
+        src={ASSETS.logo}
+        alt="Ever Journey"
+        sx={{
+          height: 'auto',
           width: '100%',
           display: 'block'
-        }} 
+        }}
       />
-      
-      <Box 
-        sx={{ 
-          minHeight: '100vh', 
+
+      <Box
+        sx={{
+          minHeight: '100vh',
           width: '100%',
           position: 'relative',
           overflowX: 'hidden',
@@ -101,7 +101,7 @@ export default function infoCompra() {
         }}
       >
         <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1, py: { xs: 4, md: 8 }, px: { xs: 2, md: 4 } }}>
-          
+
           {/* Botón Volver (Mantenido arriba a la izquierda) */}
           <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 2 }}>
             <Button
@@ -136,7 +136,7 @@ export default function infoCompra() {
                 mb: 2
               }}
             >
-              Tu Póliza se Emitió con Éxito
+              ¡Gracias por completar el proceso con nosotros! 🎉
             </Typography>
           </Box>
 
@@ -168,9 +168,9 @@ export default function infoCompra() {
               }}
             >
               {/* Imagen Central */}
-              <Box 
-                sx={{ 
-                  width: '100%', 
+              <Box
+                sx={{
+                  width: '100%',
                   mb: 4,
                   borderRadius: 3,
                   overflow: 'hidden',
@@ -190,18 +190,51 @@ export default function infoCompra() {
               </Box>
 
               {/* Texto Descriptivo */}
-              <Typography 
-                variant="body1" 
-                sx={{ 
-                  color: 'text.secondary', 
-                  fontSize: '1.05rem', 
-                  lineHeight: 1.6,
-                  fontWeight: 500,
-                  px: { xs: 1, sm: 3 }
-                }}
-              >
-                "¡Hola! Te informamos que tu póliza ya ha sido emitida con éxito. En breve, enviaremos toda la documentación digital a tu correo electrónico registrado. Por favor, revisa tu bandeja de entrada (y la carpeta de spam por si acaso). ¡Gracias por confiar en nosotros!"
-              </Typography>
+              <Box sx={{ width: '100%', px: { xs: 1, sm: 2 }, textAlign: 'left' }}>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    color: 'text.primary',
+                    fontSize: '1.1rem',
+                    lineHeight: 1.6,
+                    fontWeight: 600,
+                    mb: 3,
+                    textAlign: 'center'
+                  }}
+                >
+                  En breve recibirás un enlace de la aplicación <Box component="span" sx={{ color: 'primary.main', fontWeight: 800 }}>Guía Pay</Box>, donde podrás suscribirte de forma rápida y segura.
+                </Typography>
+
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 4, px: { xs: 1, sm: 3 } }}>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                    <CheckCircle2 size={24} color="#004b8d" style={{ marginTop: '2px', flexShrink: 0 }} />
+                    <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '1rem', lineHeight: 1.5 }}>
+                      Gestiona tus pagos de manera ágil y realiza transacciones en línea.
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                    <Smartphone size={24} color="#004b8d" style={{ marginTop: '2px', flexShrink: 0 }} />
+                    <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '1rem', lineHeight: 1.5 }}>
+                      Lleva un mejor control de tus operaciones en una plataforma confiable diseñada para simplificar tu día a día.
+                    </Typography>
+                  </Box>
+                </Box>
+
+                <Box sx={{ 
+                  backgroundColor: 'rgba(0, 75, 141, 0.05)', 
+                  p: 2.5, 
+                  borderRadius: 3, 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: 2,
+                  border: '1px solid rgba(0, 75, 141, 0.1)'
+                }}>
+                  <HeartHandshake size={28} color="#e67e22" style={{ flexShrink: 0 }} />
+                  <Typography variant="body2" sx={{ color: 'primary.dark', fontWeight: 600, fontSize: '0.95rem', lineHeight: 1.5 }}>
+                    Si tienes alguna duda durante el proceso, no dudes en contactarnos. ¡Estamos para ayudarte!
+                  </Typography>
+                </Box>
+              </Box>
             </Paper>
           </Box>
 

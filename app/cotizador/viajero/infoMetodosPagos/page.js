@@ -107,7 +107,7 @@ export default function infoMetodosPagos() {
   const handlePayment = () => {
     // Lógica para procesar el pago
     console.log('Procesando pago...', formData);
-    router.push('/cotizador/viajero/infoGuiaPay'); // Cambia a tu ruta de éxito
+    router.push('/cotizador/viajero/infoCompra'); // Cambia a tu ruta de éxito
   };
 
   const isPayDisabled = () => {
