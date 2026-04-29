@@ -19,7 +19,7 @@ import {
   CircularProgress
 } from '@mui/material';
 import { motion } from 'motion/react';
-import { ChevronRight, ChevronLeft, Upload, Eye, X } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Upload, Eye, X, Camera, Keyboard } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 // Reutilizamos el tema de la sección de viajeros para mantener la consistencia
@@ -73,6 +73,7 @@ export default function InfoPlanesPage() {
   });
 
   const boletoInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
   const [boletoImage, setBoletoImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -297,30 +298,100 @@ export default function InfoPlanesPage() {
                 alignItems: 'center'
               }}>
                 <Typography variant="subtitle2" sx={{ color: 'text.primary', mb: 2, fontWeight: 700 }}>
-                  ¿Tienes tu boleto a la mano?
+                  ¿Cómo deseas ingresar los datos de tu viaje?
                 </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary', mb: 3, textAlign: 'center', maxWidth: '400px' }}>
-                  Puedes subir una imagen de tu boleto de viaje de forma opcional.
+                <Typography variant="body2" sx={{ color: 'text.secondary', mb: 3, textAlign: 'center', maxWidth: '500px' }}>
+                  Toma una foto o sube la imagen de tu boleto para autocompletar la información, o ingresa los datos de forma manual.
                 </Typography>
                 <input type="file" accept="image/*" ref={boletoInputRef} style={{ display: 'none' }} onChange={handleBoletoUpload} />
+                <input type="file" accept="image/*" capture="environment" ref={cameraInputRef} style={{ display: 'none' }} onChange={handleBoletoUpload} />
                 <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
+                  <Button 
+                    variant="outlined" 
+                    startIcon={isAnalyzing ? <CircularProgress size={18} /> : <Camera size={18} />} 
+                    onClick={() => cameraInputRef.current.click()}
+                    disabled={isAnalyzing}
+                    title="Tomar Foto"
+                    sx={{ 
+                      borderRadius: '10px', 
+                      textTransform: 'none', 
+                      fontWeight: 600, 
+                      borderColor: 'rgba(0, 75, 141, 0.3)',
+                      minWidth: { xs: '40px', sm: '64px' },
+                      p: { xs: '8px 12px', sm: '6px 16px' },
+                      '& .MuiButton-startIcon': { m: { xs: 0, sm: '0 8px 0 -4px' } }
+                    }}
+                  >
+                    <Box component="span" sx={{ display: { xs: 'none', sm: 'inline-block' } }}>
+                      {isAnalyzing ? 'Analizando...' : 'Tomar Foto'}
+                    </Box>
+                  </Button>
                   <Button 
                     variant="outlined" 
                     startIcon={isAnalyzing ? <CircularProgress size={18} /> : <Upload size={18} />} 
                     onClick={() => boletoInputRef.current.click()}
                     disabled={isAnalyzing}
-                    sx={{ borderRadius: '10px', textTransform: 'none', fontWeight: 600, borderColor: 'rgba(0, 75, 141, 0.3)' }}
+                    title="Subir Imagen"
+                    sx={{ 
+                      borderRadius: '10px', 
+                      textTransform: 'none', 
+                      fontWeight: 600, 
+                      borderColor: 'rgba(0, 75, 141, 0.3)',
+                      minWidth: { xs: '40px', sm: '64px' },
+                      p: { xs: '8px 12px', sm: '6px 16px' },
+                      '& .MuiButton-startIcon': { m: { xs: 0, sm: '0 8px 0 -4px' } }
+                    }}
                   >
-                    {isAnalyzing ? 'Analizando...' : (boletoImage ? 'Cambiar Boleto' : 'Subir Boleto')}
+                    <Box component="span" sx={{ display: { xs: 'none', sm: 'inline-block' } }}>
+                      {isAnalyzing ? 'Analizando...' : 'Subir Imagen'}
+                    </Box>
+                  </Button>
+                  <Button 
+                    variant="outlined" 
+                    startIcon={<Keyboard size={18} />} 
+                    onClick={() => {
+                      const input = document.getElementById('origen-input');
+                      if (input) {
+                        input.focus();
+                        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }
+                    }}
+                    disabled={isAnalyzing}
+                    title="Ingresar Manual"
+                    sx={{ 
+                      borderRadius: '10px', 
+                      textTransform: 'none', 
+                      fontWeight: 600, 
+                      borderColor: 'rgba(0, 75, 141, 0.3)', 
+                      color: 'text.secondary',
+                      minWidth: { xs: '40px', sm: '64px' },
+                      p: { xs: '8px 12px', sm: '6px 16px' },
+                      '& .MuiButton-startIcon': { m: { xs: 0, sm: '0 8px 0 -4px' } }
+                    }}
+                  >
+                    <Box component="span" sx={{ display: { xs: 'none', sm: 'inline-block' } }}>
+                      Ingresar Manual
+                    </Box>
                   </Button>
                   {boletoImage && (
                     <Button 
                       variant="outlined" 
                       startIcon={<Eye size={18} />} 
                       onClick={() => setPreviewImage(boletoImage)}
-                      sx={{ borderRadius: '10px', textTransform: 'none', fontWeight: 600, borderColor: 'rgba(0, 75, 141, 0.3)' }}
+                      title="Ver Boleto"
+                      sx={{ 
+                        borderRadius: '10px', 
+                        textTransform: 'none', 
+                        fontWeight: 600, 
+                        borderColor: 'rgba(0, 75, 141, 0.3)',
+                        minWidth: { xs: '40px', sm: '64px' },
+                        p: { xs: '8px 12px', sm: '6px 16px' },
+                        '& .MuiButton-startIcon': { m: { xs: 0, sm: '0 8px 0 -4px' } }
+                      }}
                     >
-                      Ver Boleto
+                      <Box component="span" sx={{ display: { xs: 'none', sm: 'inline-block' } }}>
+                        Ver Boleto
+                      </Box>
                     </Button>
                   )}
                 </Box>
@@ -329,6 +400,7 @@ export default function InfoPlanesPage() {
               <Grid container spacing={3}>
                 <Grid size={{ xs:12, sm:6 }} >
                   <TextField 
+                    id="origen-input"
                     fullWidth 
                     label="Origen" 
                     name="origen" 
